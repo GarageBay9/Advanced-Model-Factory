@@ -1,11 +1,13 @@
-AMF BUILD KIT: getting the Windows and Mac apps built by GitHub
-==============================================================
+AMF BUILD KIT: getting the Windows app built by GitHub
+=======================================================
 
 What this does
 --------------
-Your computer does not build the apps. GitHub's own computers do: one Windows
-machine and one Mac, for free, in the cloud. You upload this kit to a GitHub
-repository, press one button, and download the finished apps.
+Your computer does not build the app. GitHub's own Windows computer does, for free.
+You upload this kit to a GitHub repository, press one button, and download the
+finished app (AMF.exe).
+
+macOS is not supported at present, so this kit builds Windows only.
 
 Before you start
 ----------------
@@ -13,12 +15,9 @@ Before you start
 2. A web browser that works on this computer and can open github.com.
    Chrome 109 is the last Chrome for Windows 7. Firefox ESR 115 is the last
    Firefox for Windows 7. If github.com will not load or log in, stop here
-   and tell us: that is the blocker, and we will look at another route.
-3. Know the limits of what can be tested here:
-   - The Windows app needs Windows 8.1 or newer. This computer runs Windows 7,
-     so it cannot run the Windows app. Someone with Windows 8.1, 10 or 11 must
-     test it.
-   - The Mac app can only be run on a Mac. Someone with a Mac must test it.
+   and tell us: that is the blocker.
+3. The Windows app needs Windows 8.1 or newer. This computer runs Windows 7, so it
+   cannot run the app. Someone with Windows 8.1, 10 or 11 must test it.
 
 Part 1: Create the repository
 -----------------------------
@@ -34,62 +33,47 @@ Part 2: Upload this kit
 1. Unzip the file AMF-build-kit.zip. On Windows 7: right-click it, choose
    "Extract All...", then "Extract". You should now have a folder called
    AMF-build-kit.
-2. Open the AMF-build-kit folder. It contains two things: a folder called
-   .github and a folder called bostool. Both must be uploaded.
-   (Do not upload INSTRUCTIONS.txt if you do not want to; it does no harm.)
+2. Open the AMF-build-kit folder. It contains a folder called .github and a
+   folder called bostool. Both must be uploaded.
 3. In your browser, on the AMF-build page, click "uploading an existing file"
-   (it is in the middle of the page under the heading "Quick setup").
-4. Select the .github folder and the bostool folder in the AMF-build-kit folder
-   and drag them into the browser window. Wait until every file shows in the list.
+   (under the heading "Quick setup").
+4. Drag the .github folder and the bostool folder from the AMF-build-kit folder
+   into the browser window. Wait until every file shows in the list.
    If the browser does not accept folders, tell us; we will give file-by-file steps.
 5. Scroll down to "Commit changes", leave the message as it is, and click the
    green "Commit changes" button.
 6. Check the result: the repository front page shows the folders ".github" and
    "bostool". Click ".github", then "workflows": you should see
-   build-apps.yml. If you do not, the upload did not work.
+   build-apps.yml.
 
 Part 3: Run the build
 ---------------------
 1. At the top of the repository page, click the "Actions" tab.
 2. If GitHub asks you to enable workflows, click the green button to enable them.
-3. In the list on the left, click "Build AMF apps".
+3. In the list on the left, click "Build AMF app".
 4. Click the "Run workflow" button (grey, on the right), then the green
    "Run workflow" button in the drop-down.
-5. A new run appears in the list. Click it. You will see two jobs:
-   "build (windows-latest)" and "build (macos-latest)".
-   Each job takes about 5 to 15 minutes. A green tick means it worked; a red
-   cross means it failed.
-6. If a job fails: click it, find the first red line, copy the text from the
+5. A new run appears in the list. Click it. The job is called "build".
+   It takes about 5 to 15 minutes. A green tick means it worked; a red cross means it failed.
+6. If it fails: click the job, find the first red line, copy the text from the
    bottom of the log, and send it to us. Do not try to fix it yourself.
 
-Part 4: Download the apps
--------------------------
-1. When both jobs are green, click the run name at the top of the page.
-2. Scroll to the bottom to "Artifacts". There are two:
-   - AMF-windows: this is a zip file that contains AMF.exe
-   - AMF-macos: this is a zip file that contains AMF-macos.zip
-3. Click each one to download it. Save them to a folder you can find.
-4. Unzip them: AMF-windows gives you AMF.exe; AMF-macos gives you AMF-macos.zip,
-   which holds the Mac app (AMF.app) once unzipped on a Mac.
+Part 4: Download the app
+------------------------
+1. When the job is green, click the run name at the top of the page.
+2. Scroll to the bottom to "Artifacts". Click "AMF-windows" to download it.
+   It is a zip file that contains AMF.exe.
+3. Unzip it. You now have AMF.exe.
 
-Part 5: Running the apps (only on a suitable machine)
------------------------------------------------------
-Windows (8.1, 10 or 11):
+Part 5: Running the app (on Windows 8.1, 10 or 11)
+--------------------------------------------------
 - Double-click AMF.exe.
 - If a blue box says "Windows protected your PC", click "More info", then
   "Run anyway". This happens because the app is not code-signed.
 
-Mac:
-- Unzip AMF-macos.zip and move AMF.app to Applications.
-- The first time, right-click AMF.app and choose "Open", then "Open" again.
-  This is needed because the app is not code-signed.
-
 Notes
 -----
-- Private repositories get a monthly allowance of free build minutes. A macOS
-  minute counts for more than a Windows minute. One run uses about 20 to 30
-  minutes of allowance in total. You can check usage under your account
-  settings, Billing.
+- Private repositories get a monthly allowance of free build minutes. One build
+  uses only a few minutes of it.
 - A public repository has no minute limit, but anyone can see the source code.
-- To run the build again later, repeat Part 3. You do not need to upload again
-  unless the code changes.
+- To build again later, repeat Part 3. You do not need to upload again unless the code changes.

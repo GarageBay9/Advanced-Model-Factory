@@ -286,7 +286,12 @@ class Viewport3DO:
             self._bind_input(self._view)
             self._surface.bind('<Configure>',lambda e: (self._place_combos(),self.redraw()))
         else:
-            _vttk.Label(body,text='The 3DO viewport needs OpenGL support (PyOpenGL and pyopengltk).\n\n'
+            if __import__('sys').platform=='darwin':        # pyopengltk 0.0.4 has no macOS frame, so this build cannot show the 3D view
+                _vttk.Label(body,text='The 3D view is not available on macOS in this build.\n\n'
+                    'pyopengltk, the package that embeds OpenGL in the window, has no macOS version yet. '
+                    'The rest of the program works: scripts, decompile, compile and the test run.',justify='left',wraplength=420).pack(padx=16,pady=16)
+            else:
+              _vttk.Label(body,text='The 3DO viewport needs OpenGL support (PyOpenGL and pyopengltk).\n\n'
                 'Install into a virtual environment (system pip often refuses installs):\n'
                 '  python3 -m venv ~/amf-venv\n'
                 '  ~/amf-venv/bin/pip install -r requirements.txt\n'

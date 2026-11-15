@@ -20,12 +20,15 @@ def need(modname):
                          f'fix: pip install -r requirements.txt pyinstaller (and check the import error above)')
 
 def main():
-    for m in ('OpenGL','pyopengltk','tkinter','PyInstaller'): need(m)
+    # pyopengltk 0.0.4 has no macOS frame, so on macOS the 3D view is left out and the rest of the program is built
+    mac=sys.platform=='darwin'
+    for m in (('OpenGL','tkinter','PyInstaller') if mac else ('OpenGL','pyopengltk','tkinter','PyInstaller')): need(m)
+    if mac: print('note: macOS build without the 3D view (pyopengltk has no macOS frame)')
     subprocess.run([sys.executable,os.path.join(SRC,'build_bostool.py')],cwd=SRC,check=True)   # fresh amf.py
     cmd=[sys.executable,'-m','PyInstaller','--noconfirm','--onefile','--name','AMF',
-         '--collect-submodules','OpenGL','--hidden-import','pyopengltk',
+         '--collect-submodules','OpenGL']+([] if mac else ['--hidden-import','pyopengltk'])+[
          '--distpath',OUT,'--workpath',os.path.join(HERE,'build'),'--specpath',os.path.join(HERE,'build')]
-    if sys.platform=='darwin': cmd.append('--windowed')          # produces AMF.app on macOS
+    if mac: cmd.append('--windowed')          # produces AMF.app on macOS
     cmd.append(os.path.join(SRC,'amf.py'))
     subprocess.run(cmd,cwd=SRC,check=True)
     print('built for',sys.platform,'into',OUT)
