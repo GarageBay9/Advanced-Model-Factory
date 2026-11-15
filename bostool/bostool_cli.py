@@ -3,7 +3,7 @@ import sys as _sys, argparse as _argparse
 def _cmd_decompile(a):
     set_linear_scale(a.linear_scale)
     text=decompile(a.cob, a.label_functions)
-    if a.o: open(a.o,'w').write(text); print('wrote',a.o)
+    if a.o: open(a.o,'w',encoding='utf-8').write(text); print('wrote',a.o)
     else: print(text)
 def _cmd_compile(a):
     set_linear_scale(a.linear_scale)

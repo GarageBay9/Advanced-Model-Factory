@@ -7,13 +7,13 @@ import os as _amf_os, sys as _amf_sys
 if _amf_sys.platform.startswith('linux'): _amf_os.environ.setdefault('PYOPENGL_PLATFORM','x11')''')
 for f in ['ops.py','cob.py','pp.py','decomp.py','compile.py','hpi.py','gaf.py','threedo.py','pieces.py','anim.py','bos_export.py','theme.py','viewer3do.py','help_text.py','bostool_gui.py']:
     keep=[]
-    for l in open(f).read().split('\n'):
+    for l in open(f,encoding='utf-8').read().split('\n'):
         if re.match(r"^if __name__\s*==\s*['\"]__main__['\"]",l): break
         if re.match(r'^\s*(from (ops|cob|pp|decomp|compile) import|import (ops|cob|pp|decomp|compile)\b)',l): continue
         keep.append(l)
     parts.append(f'# ---- from {f} ----\n'+'\n'.join(keep))
-cli=open('bostool_cli.py').read()
+cli=open('bostool_cli.py',encoding='utf-8').read()
 out='\n\n'.join(parts)+'\n\n'+cli
-open('bostool.py','w').write(out)
-open('amf.py','w').write(out)     # the program's own name for the file users run
+open('bostool.py','w',encoding='utf-8').write(out)
+open('amf.py','w',encoding='utf-8').write(out)     # the program's own name for the file users run
 print('built bostool.py and amf.py')
