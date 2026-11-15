@@ -29,6 +29,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt pyinstaller
 
+      - name: Check the packages import
+        run: python -c "import tkinter, OpenGL, pyopengltk, PyInstaller; print('imports ok:', OpenGL.__version__, PyInstaller.__version__)"
+
       - name: Build the app for this system
         run: python packaging/build_app.py
 

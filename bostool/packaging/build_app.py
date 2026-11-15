@@ -13,8 +13,11 @@ SRC=os.path.dirname(HERE)
 OUT=os.path.join(HERE,'dist')
 
 def need(modname):
+    # Shows the real error, not just the name: an import can fail for a reason other than a missing package.
     try: __import__(modname)
-    except ImportError: raise SystemExit(f'missing {modname}: pip install -r requirements.txt pyinstaller')
+    except Exception as e:
+        raise SystemExit(f'cannot import {modname}: {type(e).__name__}: {e}\n'
+                         f'fix: pip install -r requirements.txt pyinstaller (and check the import error above)')
 
 def main():
     for m in ('OpenGL','pyopengltk','tkinter','PyInstaller'): need(m)
