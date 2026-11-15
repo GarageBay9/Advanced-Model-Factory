@@ -1,0 +1,53 @@
+# GitHub Actions workflow: builds the Windows and macOS apps on hosted runners, since PyInstaller cannot cross-compile.
+# Copy this file to .github/workflows/build-apps.yml in the repository. If the bostool folder is not at the repository
+# root, change working-directory below to its path. Run it from the Actions tab (Run workflow); the apps are attached
+# to the run as downloadable artifacts.
+name: Build AMF apps
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: bostool
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install requirements and PyInstaller
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt pyinstaller
+
+      - name: Build the app for this system
+        run: python packaging/build_app.py
+
+      - name: Zip the macOS app bundle
+        if: runner.os == 'macOS'
+        run: |
+          cd packaging/dist
+          zip -r AMF-macos.zip AMF.app
+
+      - name: Upload the macOS app
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: AMF-macos
+          path: bostool/packaging/dist/AMF-macos.zip
+
+      - name: Upload the Windows app
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: AMF-windows
+          path: bostool/packaging/dist/AMF.exe
